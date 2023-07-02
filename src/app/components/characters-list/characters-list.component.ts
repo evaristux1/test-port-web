@@ -26,7 +26,7 @@ export class CharactersListComponent implements OnInit, OnDestroy {
   }
 
   likeCharacter(character: Character) {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
       const email = prompt('Digite seu email:');
       if (!email) {
@@ -39,7 +39,7 @@ export class CharactersListComponent implements OnInit, OnDestroy {
       this.httpClientConfig.post('auth/generate', requestPayload).subscribe({
         next: (response: any) => {
           const token = response.token;
-          localStorage.setItem('token', token);
+          sessionStorage.setItem('token', token);
           this.executeLikeCharacterRequest(character, token);
         },
       });
@@ -55,10 +55,12 @@ export class CharactersListComponent implements OnInit, OnDestroy {
     this.httpClientConfig.post(`characters/${character.id}/like`, requestPayload).subscribe({
       next: (response: any) => {
         window.alert("Personagem curtido com sucesso!")
-        console.log("🚀 ~ file: characters-list.component.ts:57 ~ CharactersListComponent ~ this.httpClientConfig.post ~ (response:", response);
 
       },
-      error: (error) => console.error('Erro ao curtir:', error),
+      error: (error) => {
+        window.alert("Houve um erro ao curtir, tente novamente!")
+        sessionStorage.clear();
+      },
     }
     );
   }
