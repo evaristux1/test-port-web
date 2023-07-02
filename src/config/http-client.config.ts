@@ -25,6 +25,6 @@ export class HttpClientConfig {
 
   public post(url: string, body: any) {
     const headers = this.getAuthorizationHeaders();
-    return this.httpClient.post(`${this.baseUrl}/${url}`, body, { headers: headers.delete('content-type') });
+    return this.httpClient.post(`${this.baseUrl}/${url}`, body, { headers });
   }
 }
